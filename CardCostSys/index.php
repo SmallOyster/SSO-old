@@ -4,12 +4,14 @@ include("Config.inc.php");
 
 $Greeting=getGreeting();
 
-if(!isset($_SESSION['Ticket']) || $_SESSION['Ticket']==""){
+define("Prefix",$_SESSION['SessionPrefix']);
+
+if(!isset($_SESSION[Prefix.'Ticket']) || $_SESSION[Prefix.'Ticket']==""){
   die(header("Location: LogIn.php"));
-}elseif(!in_array(Module,$_SESSION['AuthModules'])){
+}elseif(!in_array(Module,$_SESSION[Prefix.'AuthModules'])){
   die(header("Location:".AuthURL));
 }else{
-  echo $_SESSION['UserName']."，".$Greeting;
+  echo $_SESSION[Prefix.'UserName']."，".$Greeting;
 }
 
 function getGreeting(){

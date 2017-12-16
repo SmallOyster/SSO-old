@@ -4,14 +4,14 @@
 * @name PHP公用函数库 4 网站全局设置项配置
 * @copyright 版权所有：小生蚝 <master@xshgzs.com>
 * @create 创建时间：2016-12-03
-* @modify 最后修改时间：2017-07-13
+* @modify 最后修改时间：2017-08-12
 * -----------------------------------------
 */
 
 
 class Settings{
   
-  // 全局设置的字符串
+  //全局设置的字符串
   public $Settings;
   
   function __construct($FileName){
@@ -55,17 +55,20 @@ class Settings{
   {
     $Settings_json="";
     if(is_writable($this->FileName)){
-      // 根据设置项所在维度分开处理
+      //根据设置项所在维度分开处理
       if($Dimension==2){
-        // 存在于二维
+        //存在于二维
         $this->Settings[$FirstName][$Name]=$Value;
+          $Settings_json=(string)json_encode($this->Settings,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        file_put_contents($this->FileName, $Settings_json);
+        return "1";
       }else{
-        // 存在于一维
+        //存在于一维
         $this->Settings[$Name]=$Value;
+          $Settings_json=(string)json_encode($this->Settings,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        file_put_contents($this->FileName, $Settings_json);
+        return "1";
       }
-      
-      $Settings_json=(string)json_encode($this->Settings,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
-      file_put_contents($this->FileName, $Settings_json);
     }else{
       toAlertDie("F4203");
     }

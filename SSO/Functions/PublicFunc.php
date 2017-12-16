@@ -4,7 +4,7 @@
 * @name 小生蚝角色权限系统 PHP公用函数库
 * @copyright 版权所有：小生蚝 <master@xshgzs.com>
 * @create 创建时间：2016-09-16
-* @modify 最后修改时间：2017-06-10
+* @modify 最后修改时间：2017-12-16
 * ----------------------------------------
 */
 
@@ -18,12 +18,8 @@ date_default_timezone_set('Asia/Shanghai');
 require_once("Package/Show.func.php");
 /* Require Package <Session> */
 require_once("Package/Session.func.php");
-/* Require Package <User Privacy> */
-require_once("Package/Privacy.func.php");
 /* Require Class <Global Settings> */
 require_once("Package/Settings.class.php");
-/* Require Class <Cache> */
-require_once("Package/Cache.class.php");
 
 
 
@@ -33,40 +29,19 @@ require_once("Package/Cache.class.php");
 * ------------------------------
 * @param String 自定义错误码
 * @param String 可选，自定义提示内容
-* @param NULL|Ajax|1 本句代码所在的位置
-* @param NULL|String 可选，待跳转的页面
 * ------------------------------
 **/
-function toAlertDie($ErrorNo,$Tips="",$isInScript="",$Location="")
+function toAlertDie($ErrorNo,$Tips="",$isInScript="")
 {
   if($isInScript=="Ajax"){
     // Ajax处理页（直接返回错误内容文字）
     $Alerting=$ErrorNo."\n".$Tips;
   }else if($isInScript==0 || $isInScript==""){
     // PHP普通页面（script标签+alert）
-    $Alerting='<script>';
-    $Alerting.='alert("Oops！系统处理出错了！\n\n错误码：'.$ErrorNo.'\n'.$Tips.'");';
-
-    if($Location==""){
-      $Alerting.='';
-    }elseif($Location=="history"){
-      $Alerting.='history.go(-1);';
-    }else{
-      $Alerting.='window.location.href="'.$Location.'";';
-    }
-
-    $Alerting.='</script>';
+    $Alerting='<script>alert("Oops！系统处理出错了！\n\n错误码：'.$ErrorNo.'\n'.$Tips.'");history.go(-1);</script>';
   }else if($isInScript==1){
     // JS代码内（直接alert）
     $Alerting='alert("Oops！系统处理出错了！\n\n错误码：'.$ErrorNo.'\n'.$Tips.'");';
-
-    if($Location==""){
-      $Alerting.='';
-    }elseif($Location=="history"){
-      $Alerting.='history.go(-1);';
-    }else{
-      $Alerting.='window.location.href="'.$Location.'";';
-    }
   } 
 
   die($Alerting);
